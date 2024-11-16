@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Employee Feedback Dashboard</h1>
+        <h1>Customer Feedback Dashboard</h1>
         <div class="overview-cards">
             <div class="card">
                 <h2>Total Feedback</h2>
@@ -34,8 +34,9 @@
         </div>
 
         <div class="chart-section">
-            <h2>Feedback Overview</h2>
-            <div id="chart"></div>
+            <h2 class="chartTitle">Feedback Overview</h2>
+            <div id="barchart"></div>
+            <div id="piechart"></div>
         </div>
 
         <div class="recent-feedback">
