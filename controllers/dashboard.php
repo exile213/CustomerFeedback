@@ -1,15 +1,5 @@
 <?php
-$host = 'localhost';
-$dbname = 'customer_feedback';
-$username = 'root';
-$password = 'imperial12';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Could not connect to the database $dbname :" . $e->getMessage());
-}
+require_once("dbconnect.php");
 
 try {
     // Fetch overview data
@@ -29,7 +19,7 @@ try {
     // Fetch positive and negative feedback percentages
     $stmt = $pdo->query("SELECT 
         SUM(CASE WHEN overall_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as positive_percentage,
-        SUM(CASE WHEN overall_rating < 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as negative_percentage
+        SUM(CASE WHEN overall_rating <= 3 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as negative_percentage
     FROM feedback");
     $feedbackPercentages = $stmt->fetch(PDO::FETCH_ASSOC);
 
