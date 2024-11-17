@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Feedback Dashboard</title>
+    <title>Customer Feedback Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../Styles/dashboard_styles.css">
 </head>
@@ -13,23 +13,19 @@
         <div class="overview-cards">
             <div class="card">
                 <h2>Total Feedback</h2>
-                <p class="big-number">1,234</p>
-                <p class="small-text">+20.1% from last month</p>
+                <p class="big-number"><?php echo number_format($totalFeedback); ?></p>
             </div>
             <div class="card">
                 <h2>Average Rating</h2>
-                <p class="big-number">4.2</p>
-                <p class="small-text">+0.2 from last month</p>
+                <p class="big-number"><?php echo number_format($overviewData['overall'], 1); ?></p>
             </div>
             <div class="card">
                 <h2>Positive Feedback</h2>
-                <p class="big-number">85%</p>
-                <p class="small-text">+2% from last month</p>
+                <p class="big-number"><?php echo number_format($feedbackPercentages['positive_percentage'], 1); ?>%</p>
             </div>
             <div class="card">
                 <h2>Negative Feedback</h2>
-                <p class="big-number">15%</p>
-                <p class="small-text">-2% from last month</p>
+                <p class="big-number"><?php echo number_format($feedbackPercentages['negative_percentage'], 1); ?>%</p>
             </div>
         </div>
 
@@ -41,7 +37,23 @@
 
         <div class="recent-feedback">
             <h2>Recent Feedback</h2>
-            <div id="recent-feedback-list"></div>
+            <div id="recent-feedback-list">
+                <?php if (!empty($recentFeedback)): ?>
+                    <?php foreach ($recentFeedback as $feedback): ?>
+                        <div class="feedback-item">
+                            <h3><?php echo htmlspecialchars($feedback['name']); ?></h3>
+                            <p>Date: <?php echo date('Y-m-d', strtotime($feedback['created_at'])); ?></p>
+                            <p>Overall: <?php echo $feedback['overall_rating']; ?>, 
+                            Product: <?php echo $feedback['product_rating']; ?>, 
+                            Service: <?php echo $feedback['service_rating']; ?>,
+                            Purchase: <?php echo $feedback['purchase_rating']; ?>,
+                            Recommend: <?php echo $feedback['recommend_rating']; ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No recent feedback available.</p>
+                <?php endif; ?>
+            </div>
         </div>
 
         <div class="detailed-feedback">
@@ -72,6 +84,11 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Pass PHP data to JavaScript
+        var initialChartData = <?php echo json_encode($chartData); ?>;
+        var initialRecentFeedback = <?php echo json_encode($recentFeedback); ?>;
+    </script>
     <script src="../Scripts/dashboard_script.js"></script>
 </body>
 </html>

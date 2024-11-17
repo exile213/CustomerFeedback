@@ -1,3 +1,5 @@
+// Feedback_Script.js
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('feedbackForm');
     const starRatings = document.querySelectorAll('.star-rating');
@@ -25,7 +27,7 @@ function handleStarClick(event) {
     }
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
     event.preventDefault();
     
     const name = document.getElementById('name').value;
@@ -38,13 +40,42 @@ function handleSubmit(event) {
         ratings[ratingName] = activeStars.length;
     });
     
-    console.log('Feedback submitted:', {
+    // Validate input
+    if (!name || !date || Object.values(ratings).some(rating => rating === 0)) {
+        alert('Please fill in all fields and provide ratings.');
+        return;
+    }
+
+    const feedbackData = {
         name: name,
         date: date,
         ratings: ratings
-    });
-    
-    alert('Thank you for your feedback!');
-    event.target.reset();
-    document.querySelectorAll('.fas.active').forEach(star => star.classList.remove('active'));
+    };
+
+    try {
+        const response = await fetch('feedback.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(feedbackData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Thank you for your feedback!');
+            form.reset();
+            document.querySelectorAll('.fas.active').forEach(star => star.classList.remove('active'));
+        } else {
+            alert('Error submitting feedback: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while submitting your feedback. Please try again.');
+    }
 }
