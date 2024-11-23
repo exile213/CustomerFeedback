@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Feedback Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../Styles/dashboard_styles.css">
+    <link rel="stylesheet" href="Styles/dashboard_styles.css">
 </head>
 <body>
     <div class="container">
@@ -83,12 +83,12 @@
             </table>
         </div>
     </div>
+    <script src="Scripts/dashboard_script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Pass PHP data to JavaScript
         var initialChartData = <?php echo json_encode($chartData); ?>;
         var initialRecentFeedback = <?php echo json_encode($recentFeedback); ?>;
     </script>
-    <script src="../Scripts/dashboard_script.js"></script>
 </body>
 </html>

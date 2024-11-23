@@ -1,4 +1,6 @@
 <?php
+//Dashboard view controller
+
 require_once("dbconnect.php");
 
 try {
@@ -47,7 +49,7 @@ try {
         'chartData' => $chartData
     ];
     // Include the view
-    require "../views/dashboard_view.php";
+    require __DIR__ . '/../views/dashboard_view.php';
 
 } catch(PDOException $e) {
     die("Query failed: " . $e->getMessage());

@@ -14,9 +14,8 @@ function createCharts(overviewData) {
         data: {
             labels: overviewData.map(item => item.name),
             datasets: [{
-                label: 'Average Rating',
                 data: overviewData.map(item => item.value),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                backgroundColor: 'rgba(75, 12, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
@@ -43,7 +42,7 @@ function createCharts(overviewData) {
         data: {
             labels: overviewData.map(item => item.name),
             datasets: [{
-                data: overviewData.map(item => item.value),
+                data:overviewData.map(item => item.value),
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
                     'rgba(255, 99, 132, 0.6)',
@@ -125,7 +124,7 @@ document.getElementById('export-btn').addEventListener('click', function() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'feedback_export.csv');
+    link.setAttribute('download', 'Feedback-Report.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
