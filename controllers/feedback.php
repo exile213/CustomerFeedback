@@ -47,4 +47,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Load the view for GET requests
-require '../views/feedback_view.php';
+require 'views/feedback_view.php';

@@ -1,6 +1,12 @@
 <?php
 //Dashboard view controller
+session_start();
 
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 require_once("dbconnect.php");
 
 try {
@@ -49,7 +55,7 @@ try {
         'chartData' => $chartData
     ];
     // Include the view
-    require __DIR__ . '/../views/dashboard_view.php';
+    require  'views/dashboard_view.php';
 
 } catch(PDOException $e) {
     die("Query failed: " . $e->getMessage());
