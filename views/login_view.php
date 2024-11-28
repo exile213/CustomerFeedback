@@ -17,7 +17,6 @@
           <form class="max-w-lg w-full mx-auto" method="POST" action="login">
             <div class="mb-12">
               <h3 class="text-gray-800 text-4xl font-extrabold">Sign in</h3>
-              <p class="text-gray-800 text-sm mt-4 ">Don't have an account <a href="register" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</a></p>
             </div>
 
             <?php if (isset($error)): ?>
@@ -60,11 +59,6 @@
                 <label for="remember-me" class="text-gray-800 ml-3 block text-sm">
                   Remember me
                 </label>
-              </div>
-              <div>
-                <a href="javascript:void(0);" class="text-blue-600 font-semibold text-sm hover:underline">
-                  Forgot Password?
-                </a>
               </div>
             </div>
 
