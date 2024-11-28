@@ -15,7 +15,7 @@ function createCharts(overviewData) {
             labels: overviewData.map(item => item.name),
             datasets: [{
                 data: overviewData.map(item => item.value),
-                backgroundColor: 'rgba(75, 12, 192, 0.6)',
+                backgroundColor: 'rgba(255, 255, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
@@ -46,16 +46,12 @@ function createCharts(overviewData) {
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
                     'rgba(255, 99, 132, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(153, 102, 255, 0.6)'
+   
                 ],
                 borderColor: [
                     'rgba(75, 192, 192, 1)',
                     'rgba(255, 99, 132, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(153, 102, 255, 1)'
+
                 ],
                 borderWidth: 1
             }]
@@ -72,11 +68,11 @@ function createCharts(overviewData) {
 }
 
 // Populate detailed feedback table
-function populateTable(feedbackData) {
+function populateTable(overviewData) {
     const tableBody = document.getElementById('feedback-table-body');
     tableBody.innerHTML = ''; // Clear existing content
 
-    feedbackData.forEach(feedback => {
+    overviewData.forEach(feedback => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${new Date(feedback.created_at).toLocaleDateString()}</td>

@@ -31,7 +31,7 @@ try {
     FROM feedback");
     $feedbackPercentages = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch recent feedback - modified to match your table structure
+    // Fetch recent feedback 
     $stmt = $pdo->query("SELECT * FROM feedback 
         ORDER BY created_at DESC 
         LIMIT 5");

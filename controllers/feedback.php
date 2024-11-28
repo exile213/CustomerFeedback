@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 // Database connection
 require_once("dbconnect.php");
 
-// Handle form submission
+// form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the request is JSON or form-data
     $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
