@@ -1,30 +1,9 @@
-// Sample customer data
-const customers = [
-    {
-        name: "John Doe",
-        email: "john@example.com",
-        phone: "123-456-7890",
-    },
-    {
-        name: "Jane Smith",
-        email: "jane@example.com",
-        phone: "098-765-4321",
-    },
-    {
-        name: "Mike Johnson",
-        email: "mike@example.com",
-        phone: "555-123-4567",
-    },
-    {
-        name: "Sarah Williams",
-        email: "sarah@example.com",
-        phone: "777-888-9999",
-    },
-];
-
 // Initialize when document loads
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Feedback data:', feedback);
+    console.log('Customers data:', customers);
     initializeTabs();
+    populateFeedbackList(feedback);
     populateCustomerList(customers);
     initializeSearch();
 });
@@ -36,92 +15,122 @@ function initializeTabs() {
 
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active class from all buttons and content
-            tabButtons.forEach(btn => {
-                btn.classList.remove('active', 'border-b-2', 'border-gray-900');
-                btn.classList.add('text-gray-500', 'hover:text-gray-700');
-            });
+            tabButtons.forEach(btn => btn.classList.remove('active', 'border-gray-800', 'text-gray-800'));
             tabContents.forEach(content => content.classList.add('hidden'));
 
-            // Add active class to clicked button and show content
-            button.classList.add('active', 'border-b-2', 'border-gray-900');
-            button.classList.remove('text-gray-500', 'hover:text-gray-700');
+            button.classList.add('active', 'border-gray-800', 'text-gray-800');
             const tabId = button.dataset.tab;
             document.getElementById(tabId).classList.remove('hidden');
         });
     });
+}
 
-    // Set initial active tab
-    document.querySelector('.tab-button[data-tab="customers"]').click();
+// Populate feedback list
+function populateFeedbackList(feedbackData) {
+    const feedbackList = document.getElementById('feedbackList');
+    if (feedbackData && feedbackData.length > 0) {
+        feedbackList.innerHTML = feedbackData.map(item => `
+            <div class="flex items-start space-x-4 rounded-lg border p-4">
+                <div class="flex-1 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">${new Date(item.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex items-center space-x-2 text-sm">
+                            <i class="ri-star-line text-yellow-400"></i>
+                            <span>Overall: ${item.overall_rating}/5</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm">
+                            <i class="ri-product-hunt-line text-blue-400"></i>
+                            <span>Product: ${item.product_rating}/5</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm">
+                            <i class="ri-customer-service-2-line text-green-400"></i>
+                            <span>Service: ${item.service_rating}/5</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm">
+                            <i class="ri-shopping-cart-line text-purple-400"></i>
+                            <span>Purchase: ${item.purchase_rating}/5</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm">
+                            <i class="ri-thumb-up-line text-red-400"></i>
+                            <span>Recommend: ${item.recommend_rating}/5</span>
+                        </div>
+                    </div>
+                    ${item.comments ? `<p class="text-sm text-gray-700 mt-2">${item.comments}</p>` : ''}
+                </div>
+                <button 
+                    class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
+                    onclick="viewFeedbackDetails('${item.id}')"
+                >
+                    View Details
+                </button>
+            </div>
+        `).join('');
+    } else {
+        feedbackList.innerHTML = '<p class="text-gray-500">No feedback available.</p>';
+    }
 }
 
 // Populate customer list
 function populateCustomerList(customerData) {
     const customerList = document.getElementById('customerList');
-    customerList.innerHTML = customerData.map(customer => `
-        <div class="flex items-start space-x-4 rounded-lg border p-4">
-            <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-gray-100">
-                <span class="text-lg font-semibold text-gray-600">
-                    ${getInitials(customer.name)}
-                </span>
-            </div>
-            <div class="flex-1 space-y-1">
-                <p class="font-medium">${customer.name}</p>
-                <div class="flex items-center space-x-2 text-sm text-gray-500">
-                    <i class="ri-mail-line"></i>
-                    <span>${customer.email}</span>
-                </div>
-                <div class="flex items-center space-x-2 text-sm text-gray-500">
-                    <i class="ri-phone-line"></i>
-                    <span>${customer.phone}</span>
+    if (customerData && customerData.length > 0) {
+        customerList.innerHTML = customerData.map(item => `
+            <div class="flex items-start space-x-4 rounded-lg border p-4">
+                <div class="flex-1 space-y-1">
+                    <p class="font-medium">Name: ${item.name}</p>
+                    <p class="font-small">Email: ${item.email}</p> 
                 </div>
             </div>
-            <button 
-                class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
-                onclick="viewCustomerDetails('${customer.email}')"
-            >
-                View Details
-            </button>
-        </div>
-    `).join('');
+        `).join('');
+    } else {
+        customerList.innerHTML = '<p class="text-gray-500">No customers available.</p>';
+    }
 }
 
 // Initialize search functionality
 function initializeSearch() {
-    const searchInput = document.getElementById('customerSearch');
-    searchInput.addEventListener('input', (e) => {
+    const feedbackSearchInput = document.getElementById('feedbackSearch');
+    feedbackSearchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
-        const filteredCustomers = customers.filter(customer => 
-            customer.name.toLowerCase().includes(searchTerm) ||
-            customer.email.toLowerCase().includes(searchTerm) ||
-            customer.phone.includes(searchTerm)
+        const filteredFeedback = feedback.filter(item => 
+            item.name.toLowerCase().includes(searchTerm) ||
+            (item.comments && item.comments.toLowerCase().includes(searchTerm)) ||
+            item.created_at.toLowerCase().includes(searchTerm) ||
+            item.overall_rating.toString().includes(searchTerm)
+        );
+        populateFeedbackList(filteredFeedback);
+    });
+
+    const customerSearchInput = document.getElementById('customerSearch');
+    customerSearchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredCustomers = customers.filter(item => 
+            item.name.toLowerCase().includes(searchTerm)
         );
         populateCustomerList(filteredCustomers);
     });
 }
 
-// Utility function to get initials from name
-function getInitials(name) {
-    return name
-        .split(' ')
-        .map(word => word[0])
-        .join('')
-        .toUpperCase();
-}
-
-// View customer details handler
-function viewCustomerDetails(email) {
-    // This would typically open a modal or navigate to a customer details page
-    alert(`Viewing details for customer: ${email}`);
-}
-
-// Logout handler
-document.querySelector('button:contains("Logout")').addEventListener('click', () => {
-    if (confirm('Are you sure you want to logout?')) {
-        // Here you would typically handle logout through the server
-        window.location.href = '/login';
+// View feedback details handler
+function viewFeedbackDetails(feedbackId) {
+    const feedbackItem = feedback.find(item => item.id === feedbackId);
+    if (feedbackItem) {
+        alert(`Feedback Details:
+        ID: ${feedbackItem.id}
+        Name: ${feedbackItem.name}
+        Date: ${new Date(feedbackItem.created_at).toLocaleString()}
+        Overall Rating: ${feedbackItem.overall_rating}/5
+        Product Rating: ${feedbackItem.product_rating}/5
+        Service Rating: ${feedbackItem.service_rating}/5
+        Purchase Rating: ${feedbackItem.purchase_rating}/5
+        Recommend Rating: ${feedbackItem.recommend_rating}/5
+        ${feedbackItem.comments ? `Comments: ${feedbackItem.comments}` : 'No comments provided.'}`);
+    } else {
+        alert('Feedback details not found.');
     }
-});
+}
 
 // Add active tab styling
 document.addEventListener('DOMContentLoaded', function() {
@@ -156,3 +165,4 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 });
+

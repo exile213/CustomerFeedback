@@ -31,6 +31,11 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             require __DIR__ . "/controllers/dashboard.php";
             break;
 
+        
+        case 'CRM/staff':
+                require __DIR__ . "/controllers/staff.php";
+                break;
+
 
         default:
             http_response_code(404);

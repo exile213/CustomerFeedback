@@ -29,10 +29,13 @@
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                     <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
                     <div>
-                        <button class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">Logout</button>
+                        <form method="post" class="inline">
+                            <button type="submit" name="logout" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">Logout</button>
+                        </form>
                     </div>
                 </div>
             </header>
+
 
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
