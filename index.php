@@ -27,15 +27,27 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             require __DIR__ . "/controllers/register_page.php";
             break;
 
+        
+        case 'CRM/staff':
+            require __DIR__ . "/controllers/staff.php";
+            break;
+
+        //DASHBOARD PAGE ROUTERS
         case 'CRM/dashboard':
             require __DIR__ . "/controllers/dashboard.php";
             break;
 
-        
-        case 'CRM/staff':
-                require __DIR__ . "/controllers/staff.php";
+        case 'CRM/user-management':
+            require __DIR__ . "/views/dashboard-pages/user-management_view.php";
+            break;       
+            
+        case 'CRM/customer-contacts':
+            require __DIR__ . "/views/dashboard-pages/customer-contacts_view.php";
+            break;
+                
+        case 'CRM/customer-feedback':
+                require __DIR__ . "/views/dashboard-pages/customer-feedback_view.php";
                 break;
-
 
         default:
             http_response_code(404);
