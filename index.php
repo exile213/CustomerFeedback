@@ -46,8 +46,8 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             break;
                 
         case 'CRM/customer-feedback':
-                require __DIR__ . "/views/dashboard-pages/customer-feedback_view.php";
-                break;
+            require __DIR__ . "/views/dashboard-pages/customer-feedback_view.php";
+            break;
 
         default:
             http_response_code(404);

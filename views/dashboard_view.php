@@ -29,7 +29,7 @@
 
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Navigation bar -->
-            <header class="bg-white border-b">
+            <header class="bg-indigo-500 border-b">
                 <div class="flex justify-between items-center px-6 py-4">
                     <h1 class="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
                     <div class="flex items-center gap-4">
@@ -59,7 +59,7 @@
                                     <i class="fas fa-comments text-indigo-600"></i>
                                 </div>
                             </div>
-                            <p class="text-sm text-green-500">+5% since yesterday</p>
+                            <p class="text-sm text-green-500">since yesterday</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-start mb-4">
@@ -76,7 +76,7 @@
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
-                                    <h2 class="text-sm font-medium text-gray-500">Positive Feedback</h2>
+                                    <h2 class="text-sm font-medium text-gray-500">Positive Ratingk</h2>
                                     <p class="text-2xl font-semibold mt-1"><?php echo number_format($feedbackPercentages['positive_percentage'], 1); ?>%</p>
                                 </div>
                                 <div class="p-2 bg-green-100 rounded-lg">
@@ -88,7 +88,7 @@
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
-                                    <h2 class="text-sm font-medium text-gray-500">Negative Feedback</h2>
+                                    <h2 class="text-sm font-medium text-gray-500">Negative Rating</h2>
                                     <p class="text-2xl font-semibold mt-1"><?php echo number_format($feedbackPercentages['negative_percentage'], 1); ?>%</p>
                                 </div>
                                 <div class="p-2 bg-red-100 rounded-lg">

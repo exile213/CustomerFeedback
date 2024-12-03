@@ -28,7 +28,7 @@
 
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Navigation bar -->
-            <header class="bg-white border-b">
+            <header class="bg-indigo-500 border-b">
                 <div class="flex justify-between items-center px-6 py-4">
                     <h1 class="text-xl font-semibold text-gray-800">Customer Feedback</h1>
                     <div class="flex items-center gap-4">
