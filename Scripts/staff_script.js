@@ -33,35 +33,45 @@ function populateFeedbackList(feedbackData) {
             <div class="flex items-start space-x-4 rounded-lg border p-4">
                 <div class="flex-1 space-y-2">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-500">${new Date(item.created_at).toLocaleDateString()}</span>
+                        <span class="text-sm font-medium">${item.Name}</span>
+                        <span class="text-sm text-gray-500">${new Date(item.feedback_date).toLocaleDateString()}</span>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="flex items-center space-x-2 text-sm">
-                            <i class="ri-star-line text-yellow-400"></i>
-                            <span>Overall: ${item.overall_rating}/5</span>
-                        </div>
-                        <div class="flex items-center space-x-2 text-sm">
-                            <i class="ri-product-hunt-line text-blue-400"></i>
-                            <span>Product: ${item.product_rating}/5</span>
-                        </div>
-                        <div class="flex items-center space-x-2 text-sm">
-                            <i class="ri-customer-service-2-line text-green-400"></i>
-                            <span>Service: ${item.service_rating}/5</span>
-                        </div>
-                        <div class="flex items-center space-x-2 text-sm">
-                            <i class="ri-shopping-cart-line text-purple-400"></i>
-                            <span>Purchase: ${item.purchase_rating}/5</span>
-                        </div>
-                        <div class="flex items-center space-x-2 text-sm">
-                            <i class="ri-thumb-up-line text-red-400"></i>
-                            <span>Recommend: ${item.recommend_rating}/5</span>
-                        </div>
+                        ${item.ratings.split(', ').map(rating => {
+                            const [category, score] = rating.split(': ');
+                            let icon = '';
+                            switch(category) {
+                                case 'Overall Satisfaction':
+                                    icon = 'ri-star-line text-yellow-400';
+                                    break;
+                                case 'Product Quality':
+                                    icon = 'ri-product-hunt-line text-blue-400';
+                                    break;
+                                case 'Customer Service':
+                                    icon = 'ri-customer-service-2-line text-green-400';
+                                    break;
+                                case 'Purchasing Experience':
+                                    icon = 'ri-shopping-cart-line text-purple-400';
+                                    break;
+                                case 'Recommendation Likelihood':
+                                    icon = 'ri-thumb-up-line text-red-400';
+                                    break;
+                                default:
+                                    icon = 'ri-question-line text-gray-400';
+                            }
+                            return `
+                                <div class="flex items-center space-x-2 text-sm">
+                                    <i class="${icon}"></i>
+                                    <span>${category}: ${score}/5</span>
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
-                    ${item.comments ? `<p class="text-sm text-gray-700 mt-2">${item.comments}</p>` : ''}
+                    ${item.comments ? `<p class="text-sm text-gray-600 mt-2">${item.comments}</p>` : ''}
                 </div>
                 <button 
                     class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
-                    onclick="viewFeedbackDetails('${item.id}')"
+                    onclick="viewFeedbackDetails('${item.FeedbackID}')"
                 >
                     View Details
                 </button>
@@ -79,8 +89,9 @@ function populateCustomerList(customerData) {
         customerList.innerHTML = customerData.map(item => `
             <div class="flex items-start space-x-4 rounded-lg border p-4">
                 <div class="flex-1 space-y-1">
-                    <p class="font-medium">Name: ${item.name}</p>
-                    <p class="font-small">Email: ${item.email}</p> 
+                    <p class="font-medium">Name: ${item.Name}</p>
+                    <p class="text-sm">Email: ${item.Email}</p> 
+                    <p class="text-sm">Phone Number: ${item.Phone}</p> 
                 </div>
             </div>
         `).join('');
@@ -95,10 +106,10 @@ function initializeSearch() {
     feedbackSearchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredFeedback = feedback.filter(item => 
-            item.name.toLowerCase().includes(searchTerm) ||
+            item.Name.toLowerCase().includes(searchTerm) ||
             (item.comments && item.comments.toLowerCase().includes(searchTerm)) ||
-            item.created_at.toLowerCase().includes(searchTerm) ||
-            item.overall_rating.toString().includes(searchTerm)
+            item.feedback_date.toLowerCase().includes(searchTerm) ||
+            item.ratings.toLowerCase().includes(searchTerm)
         );
         populateFeedbackList(filteredFeedback);
     });
@@ -107,7 +118,8 @@ function initializeSearch() {
     customerSearchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredCustomers = customers.filter(item => 
-            item.name.toLowerCase().includes(searchTerm)
+            item.Name.toLowerCase().includes(searchTerm) ||
+            item.Email.toLowerCase().includes(searchTerm)
         );
         populateCustomerList(filteredCustomers);
     });
@@ -115,54 +127,16 @@ function initializeSearch() {
 
 // View feedback details handler
 function viewFeedbackDetails(feedbackId) {
-    const feedbackItem = feedback.find(item => item.id === feedbackId);
+    const feedbackItem = feedback.find(item => item.FeedbackID === feedbackId);
     if (feedbackItem) {
         alert(`Feedback Details:
-        ID: ${feedbackItem.id}
-        Name: ${feedbackItem.name}
-        Date: ${new Date(feedbackItem.created_at).toLocaleString()}
-        Overall Rating: ${feedbackItem.overall_rating}/5
-        Product Rating: ${feedbackItem.product_rating}/5
-        Service Rating: ${feedbackItem.service_rating}/5
-        Purchase Rating: ${feedbackItem.purchase_rating}/5
-        Recommend Rating: ${feedbackItem.recommend_rating}/5
+        ID: ${feedbackItem.FeedbackID}
+        Name: ${feedbackItem.Name}
+        Date: ${new Date(feedbackItem.feedback_date).toLocaleString()}
+        Ratings: ${feedbackItem.ratings}
         ${feedbackItem.comments ? `Comments: ${feedbackItem.comments}` : 'No comments provided.'}`);
     } else {
         alert('Feedback details not found.');
     }
 }
-
-// Add active tab styling
-document.addEventListener('DOMContentLoaded', function() {
-    const style = document.createElement('style');
-    style.textContent = `
-        .tab-button {
-            position: relative;
-            transition: all 0.2s;
-        }
-        
-        .tab-button.active {
-            color: rgb(17, 24, 39);
-        }
-        
-        .tab-button:not(.active) {
-            color: rgb(107, 114, 128);
-        }
-        
-        .tab-button:not(.active):hover {
-            color: rgb(55, 65, 81);
-        }
-        
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: rgb(17, 24, 39);
-        }
-    `;
-    document.head.appendChild(style);
-});
 

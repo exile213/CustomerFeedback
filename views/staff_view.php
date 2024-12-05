@@ -10,7 +10,7 @@
 <body class="bg-gray-100">
     <div class="min-h-screen flex flex-col">
         <!-- Navigation Bar -->
-        <nav class="bg-gray-800 shadow-md">
+        <nav class="bg-indigo-600 shadow-md">
             <div class="max-w-7xl mx-auto px-4 sm:px-3 lg:px-1">
                 <div class="flex justify-between h-20">
                     <div class="flex items-center">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="flex items-center space-x-4 mt-5">
                         <form method="post" class="inline">
-                            <button type="submit" name="logout" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500">Logout</button>
+                            <button type="submit" name="logout" class="bg-indigo-800 text-white px-4 py-2 rounded hover:bg-gray-700">Logout</button>
                         </form>
                     </div>
                 </div>

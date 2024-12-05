@@ -59,31 +59,29 @@
                                     <i class="fas fa-comments text-indigo-600"></i>
                                 </div>
                             </div>
-                            <p class="text-sm text-green-500">since yesterday</p>
+
                         </div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
                                     <h2 class="text-sm font-medium text-gray-500">Average Rating</h2>
-                                    <p class="text-2xl font-semibold mt-1"><?php echo number_format($overviewData['overall'], 1); ?></p>
+                                    <p class="text-2xl font-semibold mt-1"><?php echo number_format($overviewData['Overall Satisfaction'] ?? 0, 1); ?></p>
                                 </div>
                                 <div class="p-2 bg-yellow-100 rounded-lg">
                                     <i class="fas fa-star text-yellow-600"></i>
                                 </div>
                             </div>
-                            <p class="text-sm text-green-500">+3% since last week</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
-                                    <h2 class="text-sm font-medium text-gray-500">Positive Ratingk</h2>
+                                    <h2 class="text-sm font-medium text-gray-500">Positive Rating</h2>
                                     <p class="text-2xl font-semibold mt-1"><?php echo number_format($feedbackPercentages['positive_percentage'], 1); ?>%</p>
                                 </div>
                                 <div class="p-2 bg-green-100 rounded-lg">
                                     <i class="fas fa-thumbs-up text-green-600"></i>
                                 </div>
                             </div>
-                            <p class="text-sm text-red-500">-2% since last quarter</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-start mb-4">
@@ -95,7 +93,6 @@
                                     <i class="fas fa-thumbs-down text-red-600"></i>
                                 </div>
                             </div>
-                            <p class="text-sm text-green-500">+5% than last month</p>
                         </div>
                     </div>
 
@@ -103,14 +100,14 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-lg font-semibold">Feedback Overview</h2>
-                                <p class="text-sm text-gray-500">4% more in 2021</p>
+                                <h2 class="text-lg font-semibold">Rating Overview</h2>
+                                <p class="text-sm text-gray-500">Average Ratings</p>
                             </div>
                             <div id="barchart" class="h-64"></div>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-lg font-semibold">Feedback Distribution</h2>
+                                <h2 class="text-lg font-semibold">Rating Distribution</h2>
                                 <p class="text-sm text-gray-500">Current year statistics</p>
                             </div>
                             <div id="piechart" class="h-64"></div>
@@ -124,15 +121,14 @@
                             <?php if (!empty($recentFeedback)): ?>
                                 <?php foreach ($recentFeedback as $feedback): ?>
                                     <div class="border-b border-gray-200 py-4 last:border-b-0">
-                                        <h3 class="font-semibold"><?php echo htmlspecialchars($feedback['name']); ?></h3>
-                                        <p class="text-sm text-gray-600">Date: <?php echo date('Y-m-d', strtotime($feedback['created_at'])); ?></p>
+                                        <h3 class="font-semibold"><?php echo htmlspecialchars($feedback['Name']); ?></h3>
+                                        <p class="text-sm text-gray-600">Date: <?php echo date('Y-m-d', strtotime($feedback['feedback_date'])); ?></p>
                                         <p class="mt-2">
-                                            Overall: <?php echo $feedback['overall_rating']; ?>, 
-                                            Product: <?php echo $feedback['product_rating']; ?>, 
-                                            Service: <?php echo $feedback['service_rating']; ?>,
-                                            Purchase: <?php echo $feedback['purchase_rating']; ?>,
-                                            Recommend: <?php echo $feedback['recommend_rating']; ?>
+                                            <?php echo htmlspecialchars($feedback['ratings']); ?>
                                         </p>
+                                        <?php if (!empty($feedback['comments'])): ?>
+                                            <p class="mt-2 text-gray-700"><?php echo htmlspecialchars($feedback['comments']); ?></p>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -159,11 +155,8 @@
                                     <tr class="bg-gray-50">
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overall</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recommend</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ratings</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comments</th>
                                     </tr>
                                 </thead>
                                 <tbody id="feedback-table-body"></tbody>
@@ -175,10 +168,13 @@
         </div>
     </div>
 
+
     <script>
-        var initialChartData = <?php echo json_encode($chartData); ?>;
-        var initialRecentFeedback = <?php echo json_encode($recentFeedback); ?>;
-    </script>
-    <script src="Scripts/dashboard_script.js"></script>
+    var chartData = <?php echo json_encode($chartData); ?>;
+    var feedbackPercentages = <?php echo json_encode($feedbackPercentages); ?>;
+    var recentFeedback = <?php echo json_encode($recentFeedback); ?>;
+</script>
+<script src="Scripts/dashboard_script.js"></script>
+
 </body>
 </html>

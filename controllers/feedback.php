@@ -1,50 +1,67 @@
 <?php
-// feedback.php (controller)
 
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-// Database connection
 require_once("dbconnect.php");
 
-// form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if the request is JSON or form-data
-    $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
-    
-    if ($contentType === "application/json") {
-        $data = json_decode(file_get_contents('php://input'), true);
-    } else {
-        $data = $_POST;
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo json_encode(['success' => false, 'message' => 'Invalid JSON: ' . json_last_error_msg()]);
+        exit;
     }
 
-    // Validate input
-    if (empty($data['name']) || empty($data['date']) || empty($data['ratings'])) {
+    if (empty($data['name']) || empty($data['email']) || empty($data['phone']) || empty($data['date']) || empty($data['ratings'])) {
         echo json_encode(['success' => false, 'message' => 'Missing required fields']);
         exit;
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO feedback (name, overall_rating, product_rating, service_rating, purchase_rating, recommend_rating, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        
-        $stmt->execute([
-            $data['name'],
-            $data['ratings']['rating1'],
-            $data['ratings']['rating2'],
-            $data['ratings']['rating3'],
-            $data['ratings']['rating4'],
-            $data['ratings']['rating5'],
-            $data['date']
-        ]);
+        $pdo->beginTransaction();
 
+        // Insert into CUSTOMER table
+        $stmt = $pdo->prepare("INSERT INTO CUSTOMER (Name, Email, Phone, Date) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE Date = ?, Email = ?, Phone = ?");
+        $stmt->execute([
+            $data['name'], 
+            $data['email'],
+            $data['phone'],
+            $data['date'],
+            $data['date'], // For UPDATE
+            $data['email'], // For UPDATE
+            $data['phone']
+        ]);
+        $customerID = $pdo->lastInsertId();
+
+        // Insert into FEEDBACK table
+        $stmt = $pdo->prepare("INSERT INTO FEEDBACK (CustomerID, feedback_date, comments) VALUES (?, ?, ?)");
+        $stmt->execute([$customerID, $data['date'], $data['comments'] ?? null]);
+        $feedbackID = $pdo->lastInsertId();
+
+        // Insert ratings
+        $ratingCategories = [
+            'overall_rating' => 1,
+            'product_rating' => 2,
+            'service_rating' => 3,
+            'purchase_rating' => 4,
+            'recommend_rating' => 5
+        ];
+
+        $stmt = $pdo->prepare("INSERT INTO RATINGS (FeedbackID, categoryID, score, created_at) VALUES (?, ?, ?, ?)");
+        foreach ($ratingCategories as $ratingKey => $categoryID) {
+            if (isset($data['ratings'][$ratingKey])) {
+                $stmt->execute([$feedbackID, $categoryID, $data['ratings'][$ratingKey], $data['date']]);
+            }
+        }
+
+        $pdo->commit();
         echo json_encode(['success' => true, 'message' => 'Feedback submitted successfully']);
     } catch(PDOException $e) {
+        $pdo->rollBack();
         error_log("Database Error: " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Error submitting feedback. Please try again.']);
+        echo json_encode(['success' => false, 'message' => 'Error submitting feedback: ' . $e->getMessage()]);
     }
     exit;
 }
 
-// Load the view for GET requests
 require 'views/feedback_view.php';

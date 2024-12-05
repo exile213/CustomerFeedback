@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'customer_feedback';
+$dbname = 'crm';
 $username = 'root';
 $password = '';
 

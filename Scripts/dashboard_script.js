@@ -1,21 +1,19 @@
-// dashboard_script.js
-
 // Create and update charts
-function createCharts(overviewData) {
-    const barChart = document.createElement('canvas');
-    const pieChart = document.createElement('canvas');
-    document.getElementById('barchart').appendChild(barChart);
-    document.getElementById('piechart').appendChild(pieChart);
-
-
-    // Create bar chart
-    new Chart(barChart, {
+function createCharts(chartData, feedbackPercentages) {
+    const barctx  = document.createElement('canvas');
+    const piectx  = document.createElement('canvas');
+    document.getElementById('barchart').appendChild(barctx);
+    document.getElementById('piechart').appendChild(piectx);
+    
+    // Bar Chart
+    new Chart(barctx, {
         type: 'bar',
         data: {
-            labels: overviewData.map(item => item.name),
+            labels: chartData.map(item => item.name),
             datasets: [{
-                data: overviewData.map(item => item.value),
-                backgroundColor: 'rgba(255, 255, 192, 0.6)',
+                label: 'Average Rating',
+                data: chartData.map(item => item.value),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
@@ -36,22 +34,23 @@ function createCharts(overviewData) {
         }
     });
 
-    // Create pie chart
-     new Chart(pieChart, {
+    // Pie Chart
+    new Chart(piectx, {
         type: 'pie',
         data: {
-            labels: overviewData.map(item => item.name),
+            labels: ['Positive', 'Negative'],
             datasets: [{
-                data:overviewData.map(item => item.value),
+                data: [
+                    feedbackPercentages.positive_percentage,
+                    feedbackPercentages.negative_percentage
+                ],
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
-                    'rgba(255, 99, 132, 0.6)',
-   
+                    'rgba(255, 99, 132, 0.6)'
                 ],
                 borderColor: [
                     'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)',
-
+                    'rgba(255, 99, 132, 1)'
                 ],
                 borderWidth: 1
             }]
@@ -68,20 +67,17 @@ function createCharts(overviewData) {
 }
 
 // Populate detailed feedback table
-function populateTable(overviewData) {
+function populateTable(recentFeedback) {
     const tableBody = document.getElementById('feedback-table-body');
     tableBody.innerHTML = ''; // Clear existing content
 
-    overviewData.forEach(feedback => {
+    recentFeedback.forEach(feedback => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${new Date(feedback.created_at).toLocaleDateString()}</td>
-            <td>${feedback.name}</td>
-            <td>${feedback.overall_rating}</td>
-            <td>${feedback.product_rating}</td>
-            <td>${feedback.service_rating}</td>
-            <td>${feedback.purchase_rating}</td>
-            <td>${feedback.recommend_rating}</td>
+            <td class="px-4 py-2">${new Date(feedback.feedback_date).toLocaleDateString()}</td>
+            <td class="px-4 py-2">${feedback.Name}</td>
+            <td class="px-4 py-2">${feedback.ratings}</td>
+            <td class="px-4 py-2">${feedback.comments || ''}</td>
         `;
         tableBody.appendChild(row);
     });
@@ -128,6 +124,6 @@ document.getElementById('export-btn').addEventListener('click', function() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    createCharts(initialChartData);
-    populateTable(initialRecentFeedback);
+    createCharts(chartData, feedbackPercentages);
+    populateTable(recentFeedback);
 });

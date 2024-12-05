@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once 'dbconnect.php';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -10,27 +9,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($email) || empty($password)) {
         $error = "Both email and password are required.";
     } else {
-        // Fetch user from database
-        $stmt = $pdo->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            // Fetch user from the database
+            $stmt = $pdo->prepare("SELECT EmployeeID, name, password, role FROM employee WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_role'] = $user['role'];
+            if ($user) {
+                // Hash the input password using SHA-256
+                $hashedInputPassword = hash('sha256', $password);
 
-            // Redirect based on user role
-            if ($user['role'] === 'admin') {
-                header("Location: dashboard");
-            } elseif ($user['role'] === 'staff') {
-                header("Location: staff");
+                // Compare the hashed password with the stored password
+                if ($hashedInputPassword === $user['password']) {
+                    $_SESSION['user_id'] = $user['EmployeeID'];
+                    $_SESSION['user_name'] = $user['name'];
+                    $_SESSION['user_role'] = $user['role'];
+
+                    // Redirect based on user role
+                    if ($user['role'] === 'admin') {
+                        header("Location: dashboard");
+                        exit();
+                    } elseif ($user['role'] === 'staff') {
+                        header("Location: staff");
+                        exit();
+                    } else {
+                        $error = "Invalid user role.";
+                    }
+                } else {
+                    $error = "Invalid email or password.";
+                }
             } else {
-                $error = "Invalid user role.";
+                $error = "Invalid email or password.";
             }
-            exit();
-        } else {
-            $error = "Invalid email or password.";
+        } catch (Exception $e) {
+            $error = "An error occurred: " . $e->getMessage();
         }
     }
 }

@@ -1,8 +1,8 @@
 <?php
-
 session_start();
 
 // Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -20,7 +20,20 @@ if (isset($_POST['logout'])) {
 // Fetch feedback from the database
 function getFeedback($pdo) {
     try {
-        $stmt = $pdo->query("SELECT overall_rating, product_rating, service_rating, purchase_rating, recommend_rating, created_at FROM feedback");
+        $stmt = $pdo->query("
+            SELECT 
+                f.FeedbackID,
+                c.Name,
+                f.feedback_date,
+                f.comments,
+                GROUP_CONCAT(CONCAT(rc.categoryName, ': ', r.score) SEPARATOR ', ') as ratings
+            FROM FEEDBACK f
+            JOIN CUSTOMER c ON f.CustomerID = c.CustomerID
+            JOIN RATINGS r ON f.FeedbackID = r.FeedbackID
+            JOIN RATINGCATEGORY rc ON r.categoryID = rc.categoryID
+            GROUP BY f.FeedbackID
+            ORDER BY f.feedback_date DESC
+        ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         error_log("Error fetching feedback: " . $e->getMessage());
@@ -28,10 +41,9 @@ function getFeedback($pdo) {
     }
 }
 
-// Fetch customers from the database
 function getCustomers($pdo) {
     try {
-        $stmt = $pdo->query("SELECT name, email FROM feedback ORDER BY name");
+        $stmt = $pdo->query("SELECT CustomerID, Name, Email,Phone FROM CUSTOMER ORDER BY Name");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         error_log("Error fetching customers: " . $e->getMessage());
@@ -50,4 +62,3 @@ echo "<script>console.log(" . json_encode($customers) . ");</script>";
 
 // Include the view file
 require "views/staff_view.php";
-

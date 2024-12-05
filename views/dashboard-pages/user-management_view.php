@@ -23,7 +23,6 @@
                     <li><a href="user_management" class="flex items-center gap-3 text-white p-2 rounded-lg bg-white/10"><i class="fas fa-users w-5"></i><span>User Management</span></a></li>
                     <div class="bottom-sideItems">
                     <li><a href="#" class="flex items-center gap-3 text-white/90 hover:text-white p-2 rounded-lg hover:bg-white/10"><i class="fas fa-cog w-5"></i><span>Settings</span></a></li>
-                    <li><a href="#" class="flex items-center gap-3 text-white/90 hover:text-white p-2 rounded-lg hover:bg-white/10"><i class="fas fa-question w-5"></i><span>Guide</span></a></li>
                     </div>
                 </ul>
             </nav>
