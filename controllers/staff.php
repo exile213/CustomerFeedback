@@ -4,7 +4,7 @@ session_start();
 // Check if user is logged in
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: login");
     exit();
 }
 require_once("dbconnect.php");
@@ -13,7 +13,7 @@ require_once("dbconnect.php");
 if (isset($_POST['logout'])) {
     $_SESSION = array();
     session_destroy();
-    header("Location: login.php");
+    header("Location: login");
     exit();
 }
 

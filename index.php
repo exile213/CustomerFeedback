@@ -49,6 +49,11 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             require __DIR__ . "/views/dashboard-pages/customer-feedback_view.php";
             break;
 
+        case 'CRM/promo_messages':
+            require __DIR__ . "/views/dashboard-pages/promo-message_view.php";
+            break;
+        
+
         default:
             http_response_code(404);
             require __DIR__ . '/controllers/login_page.php';
