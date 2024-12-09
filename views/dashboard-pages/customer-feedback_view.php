@@ -13,9 +13,9 @@
         
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Navigation bar -->
-            <header class="bg-white shadow-sm">
+            <header class="bg-indigo-500  shadow-sm">
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                    <h1 class="text-lg font-semibold text-gray-900">Customer Feedback</h1>
+                    <h1 class="text-xl font-semibold text-white">Customer Feedback</h1>
                 </div>
             </header>
 

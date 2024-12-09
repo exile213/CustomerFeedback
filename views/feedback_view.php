@@ -12,7 +12,6 @@
         <div class="bg-white rounded-3xl shadow-xl w-full max-w-md p-8">
             <h1 class="text-3xl font-bold text-center text-purple-600 mb-2">Customer Feedback</h1>
             <p class="text-gray-500 text-center mb-8">Please share your experience with us</p>
-            
             <form id="feedbackForm" class="space-y-6">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>

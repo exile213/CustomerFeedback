@@ -15,16 +15,7 @@
             <!-- Navigation bar -->
             <header class="bg-indigo-500 border-b">
                 <div class="flex justify-between items-center px-6 py-4">
-                    <h1 class="text-xl font-semibold text-gray-800">User Management</h1>
-                    <div class="flex items-center gap-4">
-                        <div class="relative">
-                            <input type="text" placeholder="Search..." class="pl-8 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        </div>
-                        <form method="post" class="inline">
-                            <button type="submit" name="logout" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Sign out</button>
-                        </form>
-                    </div>
+                    <h1 class="text-xl font-semibold text-white">User Management</h1>
                 </div>
             </header>
 

@@ -22,16 +22,27 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             require __DIR__ . "/controllers/feedback.php";
             break;
 
-
-        case 'CRM/register':
-            require __DIR__ . "/controllers/register_page.php";
-            break;
-
-        
         case 'CRM/staff':
+            require __DIR__ . "/controllers/staff.php";
+             break;
+
+        case 'CRM/staffModule':
+                require __DIR__ . "/views/StaffModule_view.php";
+                break;
+
+        case 'CRM/staffCRM':
             require __DIR__ . "/controllers/staff.php";
             break;
 
+        case 'CRM/staffPOS':
+            require __DIR__ . "/views/pos.php";
+            break;
+    
+        case 'CRM/staffInventory':
+            require __DIR__ . "/controllers/staff.php";
+             break;
+        
+        
 
 
         //DASHBOARD PAGE ROUTERS--------------------------------------------------------------------------------------------------------------

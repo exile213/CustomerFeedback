@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+// Check if user is logged in
+
+echo $_SESSION['user_id'];
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login");
+    exit();
+}?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,9 +138,9 @@
 <div class="container">
     <h1>Which interface would you like to access?</h1>
     <div class="button-container">
-        <button class="button">Inventory</button>
-        <button class="button">Point-of-Sale</button>
-        <button class="button">CRM</button>
+        <a href="staffInventory" class="button">Inventory</a>
+        <a href="staffPOS" class="button">Point-of-Sale</a>
+        <a href="staffCRM" class="button">CRM</a>
     </div>
 </div>
 </body>

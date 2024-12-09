@@ -14,7 +14,7 @@
             <!-- Navigation bar -->
             <header class="bg-indigo-500  border-b">
                 <div class="flex justify-between items-center px-6 py-4">
-                    <h1 class="text-xl font-semibold text-gray-800">Promotional Messages</h1>
+                    <h1 class="text-xl font-semibold text-white">Promotional Messages</h1>
                     <div class="flex items-center gap-4">
                         <div class="relative">
                             <input type="text" placeholder="Search..." class="pl-8 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
