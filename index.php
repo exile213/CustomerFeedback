@@ -44,11 +44,11 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             break;       
             
         case 'CRM/customer-contacts':
-            require __DIR__ . "/views/dashboard-pages/customer-contacts_view.php";
+            require __DIR__ . "/controllers/dashboard-pages/customer-contacts.php";
             break;
                 
         case 'CRM/customer-feedback':
-            require __DIR__ . "/views/dashboard-pages/customer-feedback_view.php";
+            require __DIR__ . "/controllers/dashboard-pages/customer-feedback.php";
             break;
 
         case 'CRM/promo_messages':
