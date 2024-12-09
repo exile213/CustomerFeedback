@@ -65,6 +65,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function createUser(data) {
+        // Ensure 'Status' is correctly capitalized
+        data.Status = data.status;
+        delete data.status;
+
         try {
             const response = await fetch('controllers/dashboard-pages/user-management.php?action=create_user', {
                 method: 'POST',
@@ -87,6 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function updateUser(data) {
+        // Ensure 'Status' is correctly capitalized
+        data.Status = data.status;
+        delete data.status;
+
         try {
             const response = await fetch('controllers/dashboard-pages/user-management.php?action=update_user', {
                 method: 'POST',
