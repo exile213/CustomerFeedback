@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'crm';
+$dbname = 'integrated_system';
 $username = 'root';
 $password = '';
 

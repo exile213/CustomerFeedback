@@ -12,7 +12,7 @@
         <?php require "views/Partials/sidebar.php"?>
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Navigation bar -->
-            <header class="bg-white border-b">
+            <header class="bg-indigo-500  border-b">
                 <div class="flex justify-between items-center px-6 py-4">
                     <h1 class="text-xl font-semibold text-gray-800">Promotional Messages</h1>
                     <div class="flex items-center gap-4">
@@ -20,7 +20,7 @@
                             <input type="text" placeholder="Search..." class="pl-8 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                         </div>
-                        <button class="px-4 py-2 border rounded-lg hover:bg-gray-100">Sign out</button>
+                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Sign out</button>
                     </div>
                 </div>
             </header>

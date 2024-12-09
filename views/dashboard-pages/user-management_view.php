@@ -87,7 +87,7 @@
                             <label for="role" class="block text-gray-700 text-sm font-bold mb-2">Role</label>
                             <select id="role" name="role" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                                 <option value="admin">Admin</option>
-                                <option value="user">User</option>
+                                <option value="staff">Staff</option>
                             </select>
                         </div>
                         <div class="mb-4">
@@ -103,7 +103,7 @@
                         <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
                             Save
                         </button>
-                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
+                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm modal-close" >
                             Cancel
                         </button>
                     </div>
@@ -140,6 +140,6 @@
     // Pass the initial users data to JavaScript
     var initialUsers = <?php echo json_encode($users); ?>;
     </script>
-    <script src="Scripts/user_management.js"></script>
+<script src="Scripts/user_management.js"></script>
 </body>
 </html>

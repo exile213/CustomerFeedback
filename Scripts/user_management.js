@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const addUserBtn = document.getElementById('addUserBtn');
     const userTableBody = document.getElementById('userTableBody');
     let currentUserId = null;
+    let initialUsers = [];
 
     addUserBtn.addEventListener('click', () => openModal('create'));
 
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = Object.fromEntries(formData.entries());
         
         if (currentUserId) {
-            data.id = currentUserId;
+            data.EmployeeID = currentUserId;
             updateUser(data);
         } else {
             createUser(data);
@@ -26,12 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modalTitle').textContent = action === 'create' ? 'Create User' : 'Edit User';
         document.getElementById('passwordField').style.display = action === 'create' ? 'block' : 'none';
         if (action === 'edit') {
-            // Fetch user data and populate form
-            const user = initialUsers.find(u => u.id == userId);
+            const user = initialUsers.find(u => u.EmployeeID == userId);
             document.getElementById('name').value = user.name;
             document.getElementById('email').value = user.email;
             document.getElementById('role').value = user.role;
-            document.getElementById('status').value = user.status;
+            document.getElementById('status').value = user.Status;
         } else {
             userForm.reset();
         }
@@ -55,69 +55,91 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteUser(currentUserId);
     });
 
-    function createUser(data) {
-        fetch('index.php?action=create_user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(result => {
+    async function handleResponse(response) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json();
+        } else {
+            throw new Error("Oops, we haven't got JSON!");
+        }
+    }
+
+    async function createUser(data) {
+        try {
+            const response = await fetch('controllers/dashboard-pages/user-management.php?action=create_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            const result = await handleResponse(response);
             if (result.success) {
                 closeModal();
                 fetchUsers();
             } else {
-                alert('Failed to create user');
+                alert('Failed to create user: ' + (result.error || 'Unknown error'));
             }
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while creating the user. Please try again.');
+        }
     }
 
-    function updateUser(data) {
-        fetch('index.php?action=update_user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(result => {
+    async function updateUser(data) {
+        try {
+            const response = await fetch('controllers/dashboard-pages/user-management.php?action=update_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            const result = await handleResponse(response);
             if (result.success) {
                 closeModal();
                 fetchUsers();
             } else {
-                alert('Failed to update user');
+                alert('Failed to update user: ' + (result.error || 'Unknown error'));
             }
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating the user. Please try again.');
+        }
     }
 
-    function deleteUser(userId) {
-        fetch('index.php?action=delete_user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: userId }),
-        })
-        .then(response => response.json())
-        .then(result => {
+    async function deleteUser(userId) {
+        try {
+            const response = await fetch('controllers/dashboard-pages/user-management.php?action=delete_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ EmployeeID: userId }),
+            });
+            const result = await handleResponse(response);
             if (result.success) {
                 closeDeleteModal();
                 fetchUsers();
             } else {
-                alert('Failed to delete user');
+                alert('Failed to delete user: ' + (result.error || 'Unknown error'));
             }
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the user. Please try again.');
+        }
     }
 
-    function fetchUsers() {
-        fetch('index.php?action=get_users')
-        .then(response => response.json())
-        .then(users => {
+    async function fetchUsers() {
+        try {
+            const response = await fetch('controllers/dashboard-pages/user-management.php?action=get_users');
+            const users = await handleResponse(response);
+            initialUsers = users;
             renderUsers(users);
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while fetching users. Please refresh the page and try again.');
+        }
     }
 
     function renderUsers(users) {
@@ -128,10 +150,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class="px-4 py-2">${user.name}</td>
                 <td class="px-4 py-2">${user.email}</td>
                 <td class="px-4 py-2">${user.role}</td>
-                <td class="px-4 py-2"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-${user.status === 'active' ? 'green' : user.status === 'pending' ? 'yellow' : 'red'}-100 text-${user.status === 'active' ? 'green' : user.status === 'pending' ? 'yellow' : 'red'}-800">${user.status}</span></td>
+                <td class="px-4 py-2"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-${user.Status === 'active' ? 'green' : user.Status === 'pending' ? 'yellow' : 'red'}-100 text-${user.Status === 'active' ? 'green' : user.Status === 'pending' ? 'yellow' : 'red'}-800">${user.Status}</span></td>
                 <td class="px-4 py-2">
-                    <button class="text-indigo-600 hover:text-indigo-900 editUserBtn" data-id="${user.id}">Edit</button>
-                    <button class="ml-2 text-red-600 hover:text-red-900 deleteUserBtn" data-id="${user.id}">Delete</button>
+                    <button class="text-indigo-600 hover:text-indigo-900 editUserBtn" data-id="${user.EmployeeID}">Edit</button>
+                    <button class="ml-2 text-red-600 hover:text-red-900 deleteUserBtn" data-id="${user.EmployeeID}">Delete</button>
                 </td>
             `;
             userTableBody.appendChild(row);
@@ -147,6 +169,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initial render of users
-    renderUsers(initialUsers);
+    // Add event listeners for closing modals
+    document.querySelectorAll('.modal-close').forEach(button => {
+        button.addEventListener('click', () => {
+            closeModal();
+            closeDeleteModal();
+        });
+    });
+
+    // Initial fetch of users
+    fetchUsers();
 });

@@ -32,13 +32,15 @@ if (isset($segments[0]) && $segments[0] === 'CRM') {
             require __DIR__ . "/controllers/staff.php";
             break;
 
-        //DASHBOARD PAGE ROUTERS
+
+
+        //DASHBOARD PAGE ROUTERS--------------------------------------------------------------------------------------------------------------
         case 'CRM/dashboard':
             require __DIR__ . "/controllers/dashboard.php";
             break;
 
         case 'CRM/user-management':
-            require __DIR__ . "/views/dashboard-pages/user-management_view.php";
+            require __DIR__ . "/controllers/dashboard-pages/user-management.php";
             break;       
             
         case 'CRM/customer-contacts':
