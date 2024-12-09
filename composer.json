@@ -1,5 +1,6 @@
 {
     "require": {
-        "nnnick/chartjs": "^4.4"
+        "nnnick/chartjs": "^4.4",
+        "twilio/sdk": "^8.3"
     }
 }

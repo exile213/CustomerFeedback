@@ -1,0 +1,307 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #ecf0f1;
+    --text-color: #34495e;
+    --sidebar-color: #2c3e50;
+    --card-color: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-color);
+    color: var(--card-color);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-header h2 {
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.sidebar-menu {
+    list-style-type: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 15px;
+}
+
+.sidebar-menu a {
+    color: var(--card-color);
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu i {
+    margin-right: 10px;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background-color: var(--card-color);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout-btn {
+    background-color: var(--primary-color);
+    color: var(--card-color);
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #2980b9;
+}
+
+main {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.search-filter {
+    display: flex;
+    gap: 10px;
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+}
+
+.search-wrapper input {
+    padding-left: 30px;
+}
+
+
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--card-color);
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--card-color);
+}
+
+.btn-secondary:hover {
+    background-color: #27ae60;
+}
+
+.card {
+    background-color: var(--card-color);
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: var(--card-color);
+}
+
+tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.change-log {
+    padding: 20px;
+}
+
+.change-log h2 {
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+#changeLog {
+    list-style-type: none;
+}
+
+#changeLog li {
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 3px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: var(--card-color);
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 500px;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        display: none;
+    }
+
+    .sidebar.active {
+        display: block;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .search-filter {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}
+
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
